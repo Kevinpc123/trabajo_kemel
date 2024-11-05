@@ -69,6 +69,5 @@
             <a href="#" class="boton-reserva">Ver ahora</a>
         </div>
     </div>
-<h2>Prueba</h2>
 </body>
 </html>
