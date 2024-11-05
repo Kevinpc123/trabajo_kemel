@@ -69,6 +69,6 @@
             <a href="#" class="boton-reserva">Ver ahora</a>
         </div>
     </div>
-<h4>hoal</h4>
+<h4>hoal perra</h4>
 </body>
 </html>
