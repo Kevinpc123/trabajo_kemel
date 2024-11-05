@@ -71,5 +71,6 @@
             <a href="#" class="boton-reserva">RESERVA TU PRUEBA</a>
         </div>
     </div>
+<h2>PRUEBA 1</h2>
 </body>
 </html>
