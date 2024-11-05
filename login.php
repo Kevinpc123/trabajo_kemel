@@ -55,6 +55,24 @@
         button:hover{
             background-color: #0057b300;
         }
+        .btn2{
+            background-color: #67cf2f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        .enlace{
+            display: block;
+            margin: 10px 0;
+            color: white;
+            text-decoration: none;
+        }
+        .enlace:hover{
+            text-decoration: underline;
+        }
     </style>
     <?php
         session_start();
@@ -154,9 +172,11 @@
                 <label>Contraseña</label>
                 <input type="password" name="password" required>
             </div>
-            <button type="submit" name="iniciar_sesion">Iniciar sesion</button>
+            <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
+            <button type="submit" name="iniciar_sesion">Iniciar sesión</button>
+            <p class="enlace">¿Eres nuevo cliente?</p>
+            <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
-        <a href="registro.php">Registrar nuevo usuario</a>
     </section>
 </div>
 </body>
