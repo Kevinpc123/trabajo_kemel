@@ -35,6 +35,61 @@
             margin: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 6px 8px 10px #ff914d;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .producto-recuadro:hover{
+            transform: scale(1.05);
+        }
+        .producto-recuadro .producto-contenedor{
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+        .producto-recuadro img.primera-imagen{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .producto-recuadro img.segunda-imagen{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .producto-recuadro:hover .primera-imagen{
+            opacity: 0;
+        }
+        .producto-recuadro:hover .segunda-imagen{
+            opacity: 1;
+        }
+        .informacion{
+            padding: 15px;
+            text-align: left;
+        }
+        .informacion h3{
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .informacion p{
+            margin: 5px 0;
+            color: black;
+        }
+        .informacion .rebaja{
+            font-weight: bold;
+            color: black;
+        }
+        .disponibilidad{
+            font-weight: bold;
+            color: #28a745;
         }
     </style>
 </head>
@@ -146,7 +201,6 @@
         <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
         <p class="disponibilidad">Disponible</p>
     </div>
-    <h2>hola</h2>
 </div>
 </body>
 </html>
