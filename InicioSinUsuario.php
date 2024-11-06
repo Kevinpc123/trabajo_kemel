@@ -17,63 +17,6 @@
     }
 
     ?>
-    <style>
-        html, body {
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-
-        .seccion-productos{
-            padding: 100px;
-            text-align: center;
-        }
-        .seccion-productos h2{
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #ff914d;
-        }
-        .producto-recuadro{
-            display: inline-block;
-            width: 300px;
-            margin: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        /* Recuadro de búsqueda (oculto inicialmente) */
-        #buscador-contenedor {
-            display: none;
-            margin-top: 10px;
-        }
-
-        #buscador {
-            padding: 8px;
-            font-size: 16px;
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        #buscar-btn {
-            padding: 8px;
-            background-color: #ff914d;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #buscar-btn:hover {
-            background-color: #ff7a00;
-        }
-
-        /* Mostrar el recuadro de búsqueda cuando el checkbox está marcado */
-        #buscador-toggle:checked + #buscador-contenedor {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 <header>
@@ -111,19 +54,11 @@
                 </a>
             <?php endif;
             ?>
-            <a></a>
             <?php
             if(!isset($_SESSION['usuario'])):?>
-                <label for="buscador-toggle">
-                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Buscador">
-                </label>
-                <!-- Checkbox que alterna la visibilidad del recuadro de búsqueda -->
-                <input type="checkbox" id="buscador-toggle" style="display: none;">
-                <!-- Recuadro de búsqueda -->
-                <div id="buscador-contenedor">
-                    <input type="text" id="buscador" placeholder="Buscar...">
-                    <button type="button" id="buscar-btn">Buscar</button>
-                </div>
+                <a href="registro.php">
+                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                </a>
             <?php endif;
             ?>
         </div>
