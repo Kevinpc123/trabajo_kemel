@@ -67,26 +67,49 @@
         .enlace:hover{
             text-decoration: underline;
         }
+        .error {
+            color: red;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            border-radius: 5px;
+        }
     </style>
     <?php
     session_start();
     require_once 'conexion.php';
     require_once 'usuario.php';
 
+    $error = "";  // Variable para almacenar los mensajes de error
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Obtener los datos del formulario
         $usuario = $_POST['usuario'];
         $contraseña = $_POST['contraseña'];
 
-        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario AND password = :password");
-        $stmt->execute(['usuario' => $usuario, 'password' => $contraseña]);
+        // Preparar y ejecutar la consulta SQL para verificar si el nickname existe en la base de datos
+        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario");
+        $stmt->execute(['usuario' => $usuario]);
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Verificar si se encontró el usuario
         if ($resultado) {
-            $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
-            $_SESSION['usuario'] = $nuevoUsuario;
-            header("Location: Inicio.php");
+            // El usuario existe, ahora verificar la contraseña
+            if ($resultado['password'] === $contraseña) {
+                // Si la contraseña es correcta, crear una sesión para el usuario
+                $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
+                $_SESSION['usuario'] = $nuevoUsuario;
+                header("Location: Inicio.php"); // Redirigir a la página de inicio
+                exit; // Detener el script
+            } else {
+                // La contraseña no es correcta
+                $error = "La contraseña es incorrecta.";  // Guardamos el mensaje en la variable $error
+            }
         } else {
-            echo "Usuario o contraseña incorrectos.";
+            // El nickname no existe
+            $error = "El nombre de usuario no existe.";  // Guardamos el mensaje en la variable $error
         }
     }
     ?>
@@ -139,8 +162,14 @@
 </header>
 <div class="seccion-principal">
     <section class="inicio-sesion">
-        <h2>Iniciar sesion</h2>
-        <form method="POST" action=""><!--en action ponemos el sitio donde se envia-->
+        <h2>Iniciar sesión</h2>
+
+        <!-- Mostrar el mensaje de error aquí -->
+        <?php if (!empty($error)): ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <form method="POST" action="">
             <div class="formulario-sesion">
                 <label for="usuario">Nombre de usuario</label>
                 <input type="text" name="usuario" required>
@@ -150,7 +179,7 @@
                 <input type="password" name="contraseña" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
-            <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
+            <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button>
             <p class="enlace">¿Eres nuevo cliente?</p>
             <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
