@@ -19,6 +19,24 @@
 
     $nombreCompleto = $_SESSION['usuario']->getNombreCompleto();
     ?>
+    <style>
+        .seccion-productos{
+            padding: 100px;
+            text-align: center;
+        }
+        .seccion-productos h2{
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ff914d;
+        }
+        .producto-recuadro{
+            display: inline-block;
+            width: 300px;
+            margin: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -42,8 +60,15 @@
                     <a href="#">Servicios</a>
                 </div>
             </div>
-            <a href="#">Bienvenido, <?= htmlspecialchars($nombreCompleto) ?></a>
-            <a href="cerrarsesion.php">Cerrar sesión</a>
+            <div class="desplegable">
+                <a href="#"><?= htmlspecialchars($nombreCompleto)?></a>
+                <div class="desplegable-contenido">
+                    <a href="#">Ver perfil</a>
+                    <a href="#">Configuracion de cuenta</a>
+                    <a href="#">Ver notificaciones</a>
+                    <a href="cerrarsesion.php">Cerrar sesión</a>
+                </div>
+            </div>
             <?php
             if(!isset($_SESSION['usuario'])):?>
                 <a href="login.php">
@@ -72,6 +97,54 @@
     <img src="imagenes/black_friday_2.png" alt="Fondo" class="imagen-fondo">
     <div class="texto">
         <a href="#" class="boton-reserva">Ver ahora</a>
+    </div>
+</div>
+<!--CATALOGO DE PRODUCTOS-->
+<div class="seccion-productos">
+    <h2>Productos</h2>
+    <div class="producto-recuadro">
+        <div class="producto-contenedor">
+            <img src="imagenes/black-laptop-screen-dark-room-night.png" class="primera-imagen">
+            <img src="imagenes/black_friday_1.png" class="segunda-imagen">
+        </div>
+        <div class="informacion">
+            <h3>Iphone 14 pro</h3>
+            <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
+            <p class="disponibilidad">Disponible</p>
+        </div>
+    </div>
+</div>
+<div class="producto-recuadro">
+    <div class="producto-contenedor">
+        <img src="imagenes/black-laptop-screen-dark-room-night.png" class="primera-imagen">
+        <img src="imagenes/black_friday_1.png" class="segunda-imagen">
+    </div>
+    <div class="informacion">
+        <h3>Iphone 14 pro</h3>
+        <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
+        <p class="disponibilidad">Disponible</p>
+    </div>
+</div>
+<div class="producto-recuadro">
+    <div class="producto-contenedor">
+        <img src="imagenes/black-laptop-screen-dark-room-night.png" class="primera-imagen">
+        <img src="imagenes/black_friday_1.png" class="segunda-imagen">
+    </div>
+    <div class="informacion">
+        <h3>Iphone 14 pro</h3>
+        <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
+        <p class="disponibilidad">Disponible</p>
+    </div>
+</div>
+<div class="producto-recuadro">
+    <div class="producto-contenedor">
+        <img src="imagenes/black-laptop-screen-dark-room-night.png" class="primera-imagen">
+        <img src="imagenes/black_friday_1.png" class="segunda-imagen">
+    </div>
+    <div class="informacion">
+        <h3>Iphone 14 pro</h3>
+        <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
+        <p class="disponibilidad">Disponible</p>
     </div>
 </div>
 </body>
