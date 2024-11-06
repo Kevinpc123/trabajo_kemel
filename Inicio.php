@@ -20,6 +20,13 @@
     $nombreCompleto = $_SESSION['usuario']->getNombreCompleto();
     ?>
     <style>
+        html, body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
         .seccion-productos{
             padding: 100px;
             text-align: center;
@@ -36,6 +43,39 @@
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+
+        /* Recuadro de búsqueda (oculto inicialmente) */
+        #buscador-contenedor {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #buscador {
+            padding: 8px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #buscar-btn {
+            padding: 8px;
+            background-color: #ff914d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #buscar-btn:hover {
+            background-color: #ff7a00;
+        }
+
+        /* Mostrar el recuadro de búsqueda cuando el checkbox está marcado */
+        #buscador-toggle:checked + #buscador-contenedor {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -76,18 +116,20 @@
                 </a>
             <?php endif;
             ?>
+            <a></a>
+            <!-- Icono de búsqueda con un checkbox para controlar la visibilidad del recuadro -->
             <?php
-            if(!isset($_SESSION['usuario'])):?>
-                <a href="registro.php">
-                    <img src="imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
-                </a>
-            <?php endif;
-            ?>
-            <?php
-            if(!isset($_SESSION['usuario'])):?>
-                <a href="registro.php">
-                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
-                </a>
+            if(isset($_SESSION['usuario'])):?>
+                <label for="buscador-toggle">
+                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Buscador">
+                </label>
+                <!-- Checkbox que alterna la visibilidad del recuadro de búsqueda -->
+                <input type="checkbox" id="buscador-toggle" style="display: none;">
+                <!-- Recuadro de búsqueda -->
+                <div id="buscador-contenedor">
+                    <input type="text" id="buscador" placeholder="Buscar...">
+                    <button type="button" id="buscar-btn">Buscar</button>
+                </div>
             <?php endif;
             ?>
         </div>
@@ -146,7 +188,6 @@
         <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
         <p class="disponibilidad">Disponible</p>
     </div>
-    <h2>hola</h2>
 </div>
 </body>
 </html>
