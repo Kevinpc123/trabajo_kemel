@@ -8,11 +8,14 @@
     <title>Iniciar sesion</title>
     <link rel="stylesheet" href="estilo.css">
     <style>
+        body{
+            background-color: black;
+        }
         .inicio-sesion{
             background-color: rgba(255, 255, 255, 0);
             color: white;
             box-shadow: 0 2px 50px #ff914d;
-            padding: 50px 20px;
+            padding: 50px 50px;
             border-radius: 8px;
             max-width: 800px;
             margin: 20px auto;
@@ -47,22 +50,13 @@
             background-color: #ff914d;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 6px 70px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 1.1em;
         }
         button:hover{
             background-color: #0057b300;
-        }
-        .btn2{
-            background-color: #67cf2f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1.1em;
         }
         .enlace{
             display: block;
@@ -160,7 +154,6 @@
     </nav>
 </header>
 <div class="seccion-principal">
-    <img src="imagenes/bg.jpg" alt="Fondo" class="imagen-fondo">
     <section class="inicio-sesion">
         <h2>Iniciar sesion</h2>
         <form method="POST" action=""><!--en action ponemos el sitio donde se envia-->
@@ -173,7 +166,7 @@
                 <input type="password" name="password" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
-            <button type="submit" name="iniciar_sesion">Iniciar sesión</button>
+            <button type="submit" name="iniciar_sesion" class="btn2"><a href="#" class="enlace">Iniciar sesión</a></button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
             <p class="enlace">¿Eres nuevo cliente?</p>
             <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
