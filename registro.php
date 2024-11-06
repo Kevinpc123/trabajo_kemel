@@ -1,13 +1,60 @@
+<?php
+session_start();  // Asegúrate de que session_start esté al inicio
+
+// Habilitar la visualización de errores para facilitar la depuración
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Incluir archivos de conexión y clases necesarias
+require_once 'conexion.php';
+require_once 'usuario.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener datos del formulario
+    $usuario = $_POST['usuario'];
+    $contraseña = $_POST['contraseña'];
+    $nombre = $_POST['nombre'];
+    $apellidos = $_POST['apellidos'];
+    $telefono = isset($_POST['telefono']) && !empty($_POST['telefono']) ? $_POST['telefono'] : NULL;  // Si no se ingresa teléfono, se asigna NULL
+    $domicilio = isset($_POST['domicilio']) && !empty($_POST['domicilio']) ? $_POST['domicilio'] : NULL;  // Lo mismo para domicilio
+
+    try {
+        // Preparar la consulta SQL para insertar los datos
+        $stmt = $dwes->prepare("INSERT INTO Cliente (nombre, apellido, password, nickname, telefono, domicilio) VALUES (:nombre, :apellido, :password, :usuario, :telefono, :domicilio)");
+
+        // Ejecutar la consulta
+        $stmt->execute([
+            'nombre' => $nombre,
+            'apellido' => $apellidos,
+            'password' => $contraseña,
+            'usuario' => $usuario,
+            'telefono' => $telefono,
+            'domicilio' => $domicilio
+        ]);
+
+        // Crear un nuevo objeto Usuario y almacenarlo en la sesión
+        $nuevoUsuario = new Usuario($usuario, $contraseña, $nombre, $apellidos);
+        $_SESSION['usuario'] = $nuevoUsuario;
+
+        // Redirigir al usuario a la página de inicio
+        header("Location: Inicio.php");
+        exit;  // Asegúrate de que el script termine aquí
+    } catch (PDOException $e) {
+        echo "Error en la inserción: " . $e->getMessage();  // Mostrar cualquier error SQL
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registro</title>
     <link rel="stylesheet" href="estilo.css">
     <style>
+        /* Estilos CSS */
         .inicio-sesion{
             background-color: rgba(255, 255, 255, 0);
             color: white;
@@ -65,34 +112,6 @@
             text-decoration: underline;
         }
     </style>
-    <?php
-    $servidor = "localhost";
-    $usuario = "root";
-    $password = "";
-    $base_datos = "crud_empleados";
-    $conexion = mysqli_connect($servidor, $usuario, $password, $base_datos);
-    if (mysqli_connect_error()) {
-        die("Fallo al conectar a MySQL: " . $conexion->connect_error) ;
-    }
-    //REGISTRO DEL USUARIO
-    if(isset($_POST['registro'])){
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
-        $domicilio = $_POST['domicilio'];
-        $telefono = $_POST['telefono'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $nickname = $_POST['nickname'];
-
-        $sql="INSERT INTO usuarios (nombre, apellido, domicilio, telefono, nickname, password) VALUES ('$nombre', '$apellido', '$domicilio', '$telefono', '$nickname', '$password ')";
-        if($conexion->query($sql) === TRUE){
-            header('Location: login.php');
-            exit();
-        }else{
-            echo "Error: " . $sql . "<br>" . $conexion->error;
-        }
-    }
-    ?>
-    ?>
 </head>
 <body>
 <header>
@@ -116,65 +135,53 @@
                     <a href="#">Servicios</a>
                 </div>
             </div>
-            <?php
-            if(!isset($_SESSION['usuario'])):?>
+            <?php if(!isset($_SESSION['usuario'])): ?>
                 <a href="login.php">
                     <img src="imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
-            <?php endif;
-            ?>
-            <?php
-            if(!isset($_SESSION['usuario'])):?>
+            <?php endif; ?>
+            <?php if(!isset($_SESSION['usuario'])): ?>
                 <a href="registro.php">
                     <img src="imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
-            <?php endif;
-            ?>
-            <?php
-            if(!isset($_SESSION['usuario'])):?>
-                <a href="registro.php">
-                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
-                </a>
-            <?php endif;
-            ?>
+            <?php endif; ?>
         </div>
     </nav>
 </header>
+
 <div class="seccion-principal">
     <img src="imagenes/bg.jpg" alt="Fondo" class="imagen-fondo">
     <section class="inicio-sesion">
         <h2>Registro de Usuario</h2>
-        <form method="POST" action=""><!--en action ponemos el sitio donde se envia.-->
+        <form method="POST">
             <div class="formulario-sesion">
                 <label>Nombre</label>
                 <input type="text" name="nombre" required>
             </div>
             <div class="formulario-sesion">
                 <label>Apellido</label>
-                <input type="text" name="apellido" required>
-            </div>
-            <div class="formulario-sesion">
-                <label>Domicilio</label>
-                <input type="text" name="domicilio" required>
-            </div>
-            <div class="formulario-sesion">
-                <label>Telefono</label>
-                <input type="text" name="telefono" required>
+                <input type="text" name="apellidos" required>
             </div>
             <div class="formulario-sesion">
                 <label>Nickname</label>
-                <input type="text" name="nickname" required>
+                <input type="text" name="usuario" required>
             </div>
             <div class="formulario-sesion">
                 <label>Contraseña</label>
-                <input type="password" name="password" required>
+                <input type="password" name="contraseña" required>
             </div>
-            <button type="submit" name="iniciar_sesion" class="btn2"><a href="#" class="enlace">Crear cuenta</a></button>
-            <p class="enlace">Ya tengo una cuenta</p>
-            <button type="submit" name="iniciar_sesion" class="btn2"><a href="registro.php" class="enlace">Iniciar Sesión</a></button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
+            <div class="formulario-sesion">
+                <label>Domicilio</label>
+                <input type="password" name="domicilio">
+            </div>
+            <div class="formulario-sesion">
+                <label>Teléfono</label>
+                <input type="password" name="telefono">
+            </div>
+            <button type="submit" name="iniciar_sesion" class="btn2">Crear cuenta</button>
+            <p class="enlace">¿Ya tienes una cuenta? <a href="login.php" class="enlace">Iniciar sesión</a></p>
         </form>
     </section>
-    <h3>holaaaaaaa</h3>
 </div>
 </body>
 </html>
