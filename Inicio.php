@@ -146,6 +146,7 @@
         <p>Antes: 900€<span class="rebaja">Ahora: 780€</span></p>
         <p class="disponibilidad">Disponible</p>
     </div>
+    <h2>hola</h2>
 </div>
 </body>
 </html>
