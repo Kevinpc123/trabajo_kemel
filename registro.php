@@ -11,7 +11,7 @@
         .inicio-sesion{
             background-color: rgba(255, 255, 255, 0);
             color: white;
-            box-shadow: 0 2px 50px #7044DA;
+            box-shadow: 0 2px 50px #ff914d;
             padding: 50px 20px;
             border-radius: 8px;
             max-width: 800px;
@@ -21,7 +21,7 @@
         .inicio-sesion h2{
             font-size: 2.5em;
             margin-bottom: 20px;
-            color: #7044DA;
+            color: #ff914d;
         }
         .formulario-sesion{
             margin-bottom: 15px;
@@ -36,7 +36,7 @@
         .formulario-sesion textarea{
             width: 100%;
             padding: 10px;
-            border: 1px solid #7044DA;
+            border: 1px solid #ff914d;
             border-radius: 4px;
             font-size: 1em;
         }
@@ -44,16 +44,25 @@
             resize: vertical;
         }
         button{
-            background-color: #7044DA;
+            background-color: #ff914d;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 6px 70px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 1.1em;
         }
         button:hover{
             background-color: #0057b300;
+        }
+        .enlace{
+            display: block;
+            margin: 10px 0;
+            color: white;
+            text-decoration: none;
+        }
+        .enlace:hover{
+            text-decoration: underline;
         }
     </style>
     <?php
@@ -62,10 +71,10 @@
     $password = "";
     $base_datos = "crud_empleados";
     $conexion = mysqli_connect($servidor, $usuario, $password, $base_datos);
-     if (mysqli_connect_error()) {
-         die("Fallo al conectar a MySQL: " . $conexion->connect_error) ;
-     }
-     //REGISTRO DEL USUARIO
+    if (mysqli_connect_error()) {
+        die("Fallo al conectar a MySQL: " . $conexion->connect_error) ;
+    }
+    //REGISTRO DEL USUARIO
     if(isset($_POST['registro'])){
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
@@ -153,16 +162,17 @@
                 <input type="text" name="telefono" required>
             </div>
             <div class="formulario-sesion">
-                <label>Contraseña</label>
-                <input type="password" name="password" required>
-            </div>
-            <div class="formulario-sesion">
                 <label>Nickname</label>
                 <input type="text" name="nickname" required>
             </div>
-            <button type="submit" name="iniciar_sesion">Registrar</button>
+            <div class="formulario-sesion">
+                <label>Contraseña</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" name="iniciar_sesion" class="btn2"><a href="#" class="enlace">Crear cuenta</a></button>
+            <p class="enlace">Ya tengo una cuenta</p>
+            <button type="submit" name="iniciar_sesion" class="btn2"><a href="registro.php" class="enlace">Iniciar Sesión</a></button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
         </form>
-        <a href="registro.php">Iniciar Sesión</a>
     </section>
     <h3>holaaaaaaa</h3>
 </div>
