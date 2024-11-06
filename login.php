@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Iniciar sesion</title>
+    <title>Iniciar sesión</title>
     <link rel="stylesheet" href="estilo.css">
     <style>
-        body{
+        body {
             background-color: black;
         }
-        .inicio-sesion{
+        .inicio-sesion {
             background-color: rgba(255, 255, 255, 0);
             color: white;
             box-shadow: 0 2px 50px #ff914d;
@@ -21,32 +20,32 @@
             margin: 20px auto;
             text-align: center;
         }
-        .inicio-sesion h2{
+        .inicio-sesion h2 {
             font-size: 2.5em;
             margin-bottom: 20px;
             color: #ff914d;
         }
-        .formulario-sesion{
+        .formulario-sesion {
             margin-bottom: 15px;
             text-align: left;
         }
-        .formulario-sesion label{
+        .formulario-sesion label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
         .formulario-sesion input,
-        .formulario-sesion textarea{
+        .formulario-sesion textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ff914d;
             border-radius: 4px;
             font-size: 1em;
         }
-        .formulario-sesion textarea{
+        .formulario-sesion textarea {
             resize: vertical;
         }
-        button{
+        button {
             background-color: #ff914d;
             color: white;
             border: none;
@@ -55,26 +54,21 @@
             cursor: pointer;
             font-size: 1.1em;
         }
-        button:hover{
+        button:hover {
             background-color: #0057b300;
         }
-        .enlace{
+        .enlace {
             display: block;
             margin: 10px 0;
             color: white;
             text-decoration: none;
         }
-        .enlace:hover{
+        .enlace:hover {
             text-decoration: underline;
         }
         .error {
             color: red;
-            font-weight: bold;
-            margin: 20px 0;
-            padding: 10px;
-            background-color: #ffe6e6;
-            border: 1px solid red;
-            border-radius: 5px;
+            margin-top: 10px;
         }
     </style>
     <?php
@@ -82,34 +76,23 @@
     require_once 'conexion.php';
     require_once 'usuario.php';
 
-    $error = "";  // Variable para almacenar los mensajes de error
+    $error = ""; // Variable para almacenar el mensaje de error
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Obtener los datos del formulario
         $usuario = $_POST['usuario'];
         $contraseña = $_POST['contraseña'];
 
-        // Preparar y ejecutar la consulta SQL para verificar si el nickname existe en la base de datos
-        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario");
-        $stmt->execute(['usuario' => $usuario]);
+        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario AND password = :password");
+        $stmt->execute(['usuario' => $usuario, 'password' => $contraseña]);
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verificar si se encontró el usuario
         if ($resultado) {
-            // El usuario existe, ahora verificar la contraseña
-            if ($resultado['password'] === $contraseña) {
-                // Si la contraseña es correcta, crear una sesión para el usuario
-                $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
-                $_SESSION['usuario'] = $nuevoUsuario;
-                header("Location: Inicio.php"); // Redirigir a la página de inicio
-                exit; // Detener el script
-            } else {
-                // La contraseña no es correcta
-                $error = "La contraseña es incorrecta.";  // Guardamos el mensaje en la variable $error
-            }
+            $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
+            $_SESSION['usuario'] = $nuevoUsuario;
+            header("Location: Inicio.php");
+            exit;
         } else {
-            // El nickname no existe
-            $error = "El nombre de usuario no existe.";  // Guardamos el mensaje en la variable $error
+            $error = "Usuario o contraseña incorrectos."; // Asignar mensaje de error
         }
     }
     ?>
@@ -163,12 +146,6 @@
 <div class="seccion-principal">
     <section class="inicio-sesion">
         <h2>Iniciar sesión</h2>
-
-        <!-- Mostrar el mensaje de error aquí -->
-        <?php if (!empty($error)): ?>
-            <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?>
-
         <form method="POST" action="">
             <div class="formulario-sesion">
                 <label for="usuario">Nombre de usuario</label>
@@ -181,8 +158,11 @@
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
             <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button>
             <p class="enlace">¿Eres nuevo cliente?</p>
-            <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
+            <button type="button" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
+        <?php if ($error): ?>
+            <p class="error"><?php echo $error; ?></p>
+        <?php endif; ?>
     </section>
 </div>
 </body>
