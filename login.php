@@ -69,40 +69,24 @@
         }
     </style>
     <?php
-        session_start();
-        $servidor = "localhost";
-        $usuario = "root";
-        $password = "";
-        $base_de_datos = "crud_empleados";
-        $conexion = mysqli_connect($servidor, $usuario, $password, $base_de_datos);
-    //CODIGO PARA LA VERIFICACION DE LA CONEXION.
-    if (mysqli_connect_error()) {/**esto nos devuelve error de conexion**/
-        die("Fallo la conexion: " . $conexion->connect_error);/**usamos 'die' para detener la ejecucion del script y mostramos el mensaje de error**/
-    }
-    //REALIZAMOS EL INICIO DE SESION SI NOS CONECTAMOS
-    if(isset($_POST['iniciar_sesion'])){
-        /**Guardamos los valores que se introducen en el formulario de inicio de sesion en variables**/
-        $nickname = $_POST['nickname'];
-        $password = $_POST['password'];
-    //CREAMOS UNA CONSULTA SQL PARA VER SI EXISTE EL USUARIO CON EL NICKNAME QUE SE NOS DA
-        $sql = "SELECT * FROM usuarios WHERE nickname='$nickname'";
-        /**Este codigo ejecuta la consulta en la base de datos**/
-        $resultado = $conexion->query($sql) ;
+    session_start();
+    require_once 'conexion.php';
+    require_once 'usuario.php';
 
-        if($resultado->num_rows > 0) {
-            $usuario = $resultado->fetch_assoc();
-            if(password_verify($password, $usuario['password'])){
-                //Guardamos los datos introducidos por el usuario en la sesion
-                $_SESSION['usuario'] = $usuario['nickname'];
-                $_SESSION['nombre'] = $usuario['nombre'];
-                $_SESSION['apellido'] = $usuario['apellido'];
-                header("Location: index.php");
-                exit();
-            }else{
-                echo "Contraseña incorrecta.";
-            }
-        }else{
-            echo "No existe el usuario.";
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $usuario = $_POST['usuario'];
+        $contraseña = $_POST['contraseña'];
+
+        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario AND password = :password");
+        $stmt->execute(['usuario' => $usuario, 'password' => $contraseña]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultado) {
+            $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
+            $_SESSION['usuario'] = $nuevoUsuario;
+            header("Location: Inicio.php");
+        } else {
+            echo "Usuario o contraseña incorrectos.";
         }
     }
     ?>
@@ -158,12 +142,12 @@
         <h2>Iniciar sesion</h2>
         <form method="POST" action=""><!--en action ponemos el sitio donde se envia-->
             <div class="formulario-sesion">
-                <label>Nombre de usuario</label>
-                <input type="text" name="nickname" required>
+                <label for="usuario">Nombre de usuario</label>
+                <input type="text" name="usuario" required>
             </div>
             <div class="formulario-sesion">
-                <label>Contraseña</label>
-                <input type="password" name="password" required>
+                <label for="contraseña">Contraseña</label>
+                <input type="password" name="contraseña" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
             <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button><!--Recordar poner el enlace al entrar a registro cuando se cree-->

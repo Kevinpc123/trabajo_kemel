@@ -71,10 +71,10 @@
     $password = "";
     $base_datos = "crud_empleados";
     $conexion = mysqli_connect($servidor, $usuario, $password, $base_datos);
-     if (mysqli_connect_error()) {
-         die("Fallo al conectar a MySQL: " . $conexion->connect_error) ;
-     }
-     //REGISTRO DEL USUARIO
+    if (mysqli_connect_error()) {
+        die("Fallo al conectar a MySQL: " . $conexion->connect_error) ;
+    }
+    //REGISTRO DEL USUARIO
     if(isset($_POST['registro'])){
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
