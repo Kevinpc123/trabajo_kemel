@@ -116,9 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <header>
     <nav>
-        <img src="imagenes/Diseño%20sin%20título-4.png" class="logo">
+        <img src="imagenes/logo_2%20(1).svg" class="logo">
         <div class="menu">
-            <a href="Inicio.php">Inicio</a>
+            <a href="InicioSinUsuario.php">Inicio</a>
             <div class="desplegable">
                 <a href="#">Coches</a>
                 <div class="desplegable-contenido">
@@ -138,11 +138,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php if(!isset($_SESSION['usuario'])): ?>
                 <a href="login.php">
                     <img src="imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
-                </a>
-            <?php endif; ?>
-            <?php if(!isset($_SESSION['usuario'])): ?>
-                <a href="registro.php">
-                    <img src="imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif; ?>
         </div>
