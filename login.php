@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Iniciar sesion</title>
+    <title>Iniciar sesión</title>
     <link rel="stylesheet" href="estilo.css">
     <style>
-        body{
+        body {
             background-color: black;
         }
-        .inicio-sesion{
+        .inicio-sesion {
             background-color: rgba(255, 255, 255, 0);
             color: white;
             box-shadow: 0 2px 50px #ff914d;
@@ -21,32 +20,32 @@
             margin: 20px auto;
             text-align: center;
         }
-        .inicio-sesion h2{
+        .inicio-sesion h2 {
             font-size: 2.5em;
             margin-bottom: 20px;
             color: #ff914d;
         }
-        .formulario-sesion{
+        .formulario-sesion {
             margin-bottom: 15px;
             text-align: left;
         }
-        .formulario-sesion label{
+        .formulario-sesion label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
         .formulario-sesion input,
-        .formulario-sesion textarea{
+        .formulario-sesion textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ff914d;
             border-radius: 4px;
             font-size: 1em;
         }
-        .formulario-sesion textarea{
+        .formulario-sesion textarea {
             resize: vertical;
         }
-        button{
+        button {
             background-color: #ff914d;
             color: white;
             border: none;
@@ -55,23 +54,29 @@
             cursor: pointer;
             font-size: 1.1em;
         }
-        button:hover{
+        button:hover {
             background-color: #0057b300;
         }
-        .enlace{
+        .enlace {
             display: block;
             margin: 10px 0;
             color: white;
             text-decoration: none;
         }
-        .enlace:hover{
+        .enlace:hover {
             text-decoration: underline;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
         }
     </style>
     <?php
     session_start();
     require_once 'conexion.php';
     require_once 'usuario.php';
+
+    $error = ""; // Variable para almacenar el mensaje de error
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario = $_POST['usuario'];
@@ -85,8 +90,9 @@
             $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
             $_SESSION['usuario'] = $nuevoUsuario;
             header("Location: Inicio.php");
+            exit;
         } else {
-            echo "Usuario o contraseña incorrectos.";
+            $error = "Usuario o contraseña incorrectos."; // Asignar mensaje de error
         }
     }
     ?>
@@ -139,8 +145,8 @@
 </header>
 <div class="seccion-principal">
     <section class="inicio-sesion">
-        <h2>Iniciar sesion</h2>
-        <form method="POST" action=""><!--en action ponemos el sitio donde se envia-->
+        <h2>Iniciar sesión</h2>
+        <form method="POST" action="">
             <div class="formulario-sesion">
                 <label for="usuario">Nombre de usuario</label>
                 <input type="text" name="usuario" required>
@@ -150,10 +156,13 @@
                 <input type="password" name="contraseña" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
-            <button type="submit" name="iniciar_sesion" class="btn2"><a href="#" class="enlace">Iniciar sesión</a></button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
+            <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button>
             <p class="enlace">¿Eres nuevo cliente?</p>
-            <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
+            <button type="button" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
+        <?php if ($error): ?>
+            <p class="error"><?php echo $error; ?></p>
+        <?php endif; ?>
     </section>
 </div>
 </body>
