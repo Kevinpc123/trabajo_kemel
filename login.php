@@ -166,7 +166,7 @@
                 <input type="password" name="password" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
-            <button type="submit" name="iniciar_sesion" class="btn2"><a href="#" class="enlace">Iniciar sesión</a></button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
+            <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button><!--Recordar poner el enlace al entrar a registro cuando se cree-->
             <p class="enlace">¿Eres nuevo cliente?</p>
             <button type="submit" name="resgistro" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
         </form>
