@@ -1,61 +1,18 @@
-<?php
-session_start();  // Asegúrate de que session_start esté al inicio
-
-// Habilitar la visualización de errores para facilitar la depuración
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Incluir archivos de conexión y clases necesarias
-require_once 'database/conexion.php';
-require_once 'usuarioDTO.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener datos del formulario
-    $usuario = $_POST['usuario'];
-    $contraseña = $_POST['contraseña'];
-    $nombre = $_POST['nombre'];
-    $apellidos = $_POST['apellidos'];
-    $telefono = isset($_POST['telefono']) && !empty($_POST['telefono']) ? $_POST['telefono'] : NULL;  // Si no se ingresa teléfono, se asigna NULL
-    $domicilio = isset($_POST['domicilio']) && !empty($_POST['domicilio']) ? $_POST['domicilio'] : NULL;  // Lo mismo para domicilio
-
-    try {
-        // Preparar la consulta SQL para insertar los datos
-        $stmt = $dwes->prepare("INSERT INTO Cliente (nombre, apellido, password, nickname, telefono, domicilio) VALUES (:nombre, :apellido, :password, :usuario, :telefono, :domicilio)");
-
-        // Ejecutar la consulta
-        $stmt->execute([
-            'nombre' => $nombre,
-            'apellido' => $apellidos,
-            'password' => $contraseña,
-            'usuario' => $usuario,
-            'telefono' => $telefono,
-            'domicilio' => $domicilio
-        ]);
-
-        // Crear un nuevo objeto Usuario y almacenarlo en la sesión
-        $nuevoUsuario = new Usuario($usuario, $contraseña, $nombre, $apellidos);
-        $_SESSION['usuario'] = $nuevoUsuario;
-
-        // Redirigir al usuario a la página de inicio
-        header("Location: InicioConUsuario.php");
-        exit;  // Asegúrate de que el script termine aquí
-    } catch (PDOException $e) {
-        echo "Error en la inserción: " . $e->getMessage();  // Mostrar cualquier error SQL
-    }
-}
-?>
-
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="../recursos/css/estilo.css">
     <style>
         /* Estilos CSS */
-        .inicio-sesion{
+        body {
+            background-color: black;
+
+        }
+
+        .inicio-sesion {
             background-color: rgba(255, 255, 255, 0);
             color: white;
             box-shadow: 0 2px 50px #ff914d;
@@ -65,32 +22,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 20px auto;
             text-align: center;
         }
-        .inicio-sesion h2{
+
+        .inicio-sesion h2 {
             font-size: 2.5em;
             margin-bottom: 20px;
             color: #ff914d;
         }
-        .formulario-sesion{
+
+        .formulario-sesion {
             margin-bottom: 15px;
             text-align: left;
         }
-        .formulario-sesion label{
+
+        .formulario-sesion label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
+
         .formulario-sesion input,
-        .formulario-sesion textarea{
+        .formulario-sesion textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ff914d;
             border-radius: 4px;
             font-size: 1em;
         }
-        .formulario-sesion textarea{
+
+        .formulario-sesion textarea {
             resize: vertical;
         }
-        button{
+
+        button {
             background-color: #ff914d;
             color: white;
             border: none;
@@ -99,16 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             font-size: 1.1em;
         }
-        button:hover{
+
+        button:hover {
             background-color: #0057b300;
         }
-        .enlace{
+
+        .enlace {
             display: block;
             margin: 10px 0;
             color: white;
             text-decoration: none;
         }
-        .enlace:hover{
+
+        .enlace:hover {
             text-decoration: underline;
         }
     </style>
@@ -135,46 +101,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <a href="#">Servicios</a>
                 </div>
             </div>
-            <?php if(!isset($_SESSION['usuario'])): ?>
+            <?php if (!isset($_SESSION['usuario'])): ?>
                 <a href="login.php">
-                    <img src="../recursos/imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-registro-50.png" class="icono-registro"
+                         alt="Registro/Iniciar Secion">
                 </a>
             <?php endif; ?>
         </div>
     </nav>
 </header>
-
 <div class="seccion-principal">
-    <img src="../recursos/imagenes/bg.jpg" alt="Fondo" class="imagen-fondo">
     <section class="inicio-sesion">
         <h2>Registro de Usuario</h2>
-        <form method="POST">
+        <form action="../controladores/registrar_usuario.php" method="POST" >
             <div class="formulario-sesion">
                 <label>Nombre</label>
-                <input type="text" name="nombre" required>
+                <input type="text" name="nombre" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios"
+                       required>
             </div>
             <div class="formulario-sesion">
                 <label>Apellido</label>
-                <input type="text" name="apellidos" required>
+                <input type="text" name="apellido" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras y espacios"
+                       required>
             </div>
             <div class="formulario-sesion">
                 <label>Nickname</label>
-                <input type="text" name="usuario" required>
+                <input type="text" name="nickname" pattern="[A-Za-z0-9]+" title="Solo caracteres alfanuméricos" required>
             </div>
             <div class="formulario-sesion">
                 <label>Contraseña</label>
-                <input type="password" name="contraseña" required>
+                <input type="password" name="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
+                       title="Mínimo 8 caracteres, incluyendo mayúsculas, minúsculas y números" required>
             </div>
             <div class="formulario-sesion">
                 <label>Domicilio</label>
-                <input type="password" name="domicilio">
+                <input type="text" name="domicilio">
             </div>
             <div class="formulario-sesion">
                 <label>Teléfono</label>
-                <input type="password" name="telefono">
+                <input type="text" name="telefono" pattern="\d*" title="Solo números">
             </div>
-            <button type="submit" name="iniciar_sesion" class="btn2">Crear cuenta</button>
-            <p class="enlace">¿Ya tienes una cuenta? <a href="login.php" class="enlace">Iniciar sesión</a></p>
+            <button type="submit" name="registrar" class="btn2">Crear cuenta</button>
+            <p>¿Ya tienes una cuenta? <a href="login.php">Iniciar sesión</a></p>
         </form>
     </section>
 </div>

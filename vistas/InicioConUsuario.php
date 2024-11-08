@@ -8,17 +8,6 @@
     <title>Virtual Tech Company Inicio</title>
     <link rel="stylesheet" href="../recursos/css/estilo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <?php
-    require_once 'usuarioDTO.php';
-    session_start();
-
-    if (!isset($_SESSION['usuario'])) {
-        header("Location: login.php");
-        exit;
-    }
-
-    $nombreCompleto = $_SESSION['usuario']->getNombreCompleto();
-    ?>
     <style>
         html, body {
             overflow-x: hidden;
@@ -135,6 +124,18 @@
         }
 
     </style>
+    <?php
+    session_start();
+    require_once '../modelos/UsuarioDTO.php';
+
+    if (!isset($_SESSION['usuario'])) {
+        header("Location: login.php");
+        exit;
+    }
+
+    $usuario = unserialize($_SESSION['usuario']);
+    $nickname = $usuario->getNickname();
+    ?>
 </head>
 <body>
 <header>
@@ -159,7 +160,7 @@
                 </div>
             </div>
             <div class="desplegable">
-                <a href="#"><?= htmlspecialchars($nombreCompleto)?></a>
+                <a href="#"><?= htmlspecialchars($nickname)?></a>
                 <div class="desplegable-contenido">
                     <a href="#">Ver perfil</a>
                     <a href="#">Configuracion de cuenta</a>

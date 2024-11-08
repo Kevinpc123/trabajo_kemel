@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once '../database/conexion.php';
+require_once '../modelos/UsuarioDAO.php';
+require_once '../modelos/UsuarioDTO.php';
+
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : ""; // Obtener el error de sesión si existe
+unset($_SESSION['error']); // Borrar el error de sesión para que no se muestre siempre
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -71,31 +80,7 @@
             margin-top: 10px;
         }
     </style>
-    <?php
-    session_start();
-    require_once 'conexion.php';
-    require_once 'usuarioDTO.php';
 
-    $error = ""; // Variable para almacenar el mensaje de error
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $usuario = $_POST['usuario'];
-        $contraseña = $_POST['contraseña'];
-
-        $stmt = $dwes->prepare("SELECT * FROM Cliente WHERE nickname = :usuario AND password = :password");
-        $stmt->execute(['usuario' => $usuario, 'password' => $contraseña]);
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($resultado) {
-            $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
-            $_SESSION['usuario'] = $nuevoUsuario;
-            header("Location: InicioConUsuario.php");
-            exit;
-        } else {
-            $error = "Usuario o contraseña incorrectos."; // Asignar mensaje de error
-        }
-    }
-    ?>
 </head>
 <body>
 <header>
@@ -132,23 +117,24 @@
 <div class="seccion-principal">
     <section class="inicio-sesion">
         <h2>Iniciar sesión</h2>
-        <form method="POST" action="">
+        <form action="../controladores/iniciar_sesion.php" method="POST">
             <div class="formulario-sesion">
-                <label for="usuario">Nombre de usuario</label>
-                <input type="text" name="usuario" required>
+                <label for="nickname">Nombre de usuario</label>
+                <input type="text" name="nickname" required>
             </div>
             <div class="formulario-sesion">
-                <label for="contraseña">Contraseña</label>
-                <input type="password" name="contraseña" required>
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" required>
             </div>
             <a href="#" class="enlace">¿He olvidado mi contraseña?</a>
             <button type="submit" name="iniciar_sesion" class="btn2">Iniciar sesión</button>
             <p class="enlace">¿Eres nuevo cliente?</p>
             <button type="button" class="btn2"><a href="registro.php" class="enlace">Crear cuenta</a></button>
+            <!-- Mostrar el mensaje de error si existe -->
+            <?php if ($error): ?>
+                <p class="error"><?php echo $error; ?></p>
+            <?php endif; ?>
         </form>
-        <?php if ($error): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
     </section>
 </div>
 </body>
