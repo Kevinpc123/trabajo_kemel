@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Iniciar sesión</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../recursos/css/estilo.css">
     <style>
         body {
             background-color: black;
@@ -74,7 +74,7 @@
     <?php
     session_start();
     require_once 'conexion.php';
-    require_once 'usuario.php';
+    require_once 'usuarioDTO.php';
 
     $error = ""; // Variable para almacenar el mensaje de error
 
@@ -89,7 +89,7 @@
         if ($resultado) {
             $nuevoUsuario = new Usuario($usuario, $contraseña, $resultado['nombre'], $resultado['apellido']);
             $_SESSION['usuario'] = $nuevoUsuario;
-            header("Location: Inicio.php");
+            header("Location: InicioConUsuario.php");
             exit;
         } else {
             $error = "Usuario o contraseña incorrectos."; // Asignar mensaje de error
@@ -100,9 +100,9 @@
 <body>
 <header>
     <nav>
-        <img src="imagenes/logo_2%20(1).svg" class="logo">
+        <img src="../recursos/imagenes/logo_2%20(1).svg" class="logo">
         <div class="menu">
-            <a href="InicioSinUsuario.php">Inicio</a>
+            <a href="index.php">Inicio</a>
             <div class="desplegable">
                 <a href="#">Coches</a>
                 <div class="desplegable-contenido">
@@ -122,7 +122,7 @@
             <?php
             if(!isset($_SESSION['usuario'])):?>
                 <a href="login.php">
-                    <img src="imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif;
             ?>

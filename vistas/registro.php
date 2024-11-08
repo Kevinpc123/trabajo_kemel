@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Incluir archivos de conexión y clases necesarias
-require_once 'conexion.php';
-require_once 'usuario.php';
+require_once 'database/conexion.php';
+require_once 'usuarioDTO.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener datos del formulario
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['usuario'] = $nuevoUsuario;
 
         // Redirigir al usuario a la página de inicio
-        header("Location: Inicio.php");
+        header("Location: InicioConUsuario.php");
         exit;  // Asegúrate de que el script termine aquí
     } catch (PDOException $e) {
         echo "Error en la inserción: " . $e->getMessage();  // Mostrar cualquier error SQL
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registro</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../recursos/css/estilo.css">
     <style>
         /* Estilos CSS */
         .inicio-sesion{
@@ -116,9 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <header>
     <nav>
-        <img src="imagenes/logo_2%20(1).svg" class="logo">
+        <img src="../recursos/imagenes/logo_2%20(1).svg" class="logo">
         <div class="menu">
-            <a href="InicioSinUsuario.php">Inicio</a>
+            <a href="index.php">Inicio</a>
             <div class="desplegable">
                 <a href="#">Coches</a>
                 <div class="desplegable-contenido">
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <?php if(!isset($_SESSION['usuario'])): ?>
                 <a href="login.php">
-                    <img src="imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif; ?>
         </div>
@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </header>
 
 <div class="seccion-principal">
-    <img src="imagenes/bg.jpg" alt="Fondo" class="imagen-fondo">
+    <img src="../recursos/imagenes/bg.jpg" alt="Fondo" class="imagen-fondo">
     <section class="inicio-sesion">
         <h2>Registro de Usuario</h2>
         <form method="POST">
