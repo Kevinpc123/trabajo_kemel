@@ -6,6 +6,7 @@ $contrasenaDB = "alumno";
 try {
     $dwes = new PDO($host, $usuarioDB, $contrasenaDB);
     $dwes->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "conexion exitosa";
 } catch (PDOException $e) {
     echo "Error de conexión: " . $e->getMessage();
     exit;
