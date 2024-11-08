@@ -2,6 +2,6 @@
 // para cerrar sesion
 session_start();
 session_destroy();
-header("location: Inicio.php");
+header("location: InicioConUsuario.php");
 exit();
 ?>

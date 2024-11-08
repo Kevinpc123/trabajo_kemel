@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Virtual Tech Company Inicio</title>
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../recursos/css/estilo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <?php
     session_start();
@@ -21,9 +21,9 @@
 <body>
 <header>
     <nav>
-        <img src="imagenes/logo_2%20(1).svg" class="logo">
+        <img src="../recursos/imagenes/logo_2%20(1).svg" class="logo">
         <div class="menu">
-            <a href="Inicio.php">Inicio</a>
+            <a href="InicioConUsuario.php">Inicio</a>
             <div class="desplegable">
                 <a href="#">Categorías</a>
                 <div class="desplegable-contenido">
@@ -43,21 +43,21 @@
             <?php
             if(!isset($_SESSION['usuario'])):?>
                 <a href="login.php">
-                    <img src="imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-registro-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif;
             ?>
             <?php
             if(!isset($_SESSION['usuario'])):?>
                 <a href="#">
-                    <img src="imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif;
             ?>
             <?php
             if(!isset($_SESSION['usuario'])):?>
                 <a href="registro.php">
-                    <img src="imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
+                    <img src="../recursos/imagenes/icons8-google-web-search-50.png" class="icono-registro" alt="Registro/Iniciar Secion">
                 </a>
             <?php endif;
             ?>
@@ -65,7 +65,7 @@
     </nav>
 </header>
 <div class="seccion-principal">
-    <img src="imagenes/black_friday_2.png" alt="Fondo" class="imagen-fondo">
+    <img src="../recursos/imagenes/black_friday_2.png" alt="Fondo" class="imagen-fondo">
     <div class="texto">
         <a href="#" class="boton-reserva">Ver ahora</a>
     </div>
