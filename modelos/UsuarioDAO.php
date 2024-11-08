@@ -16,6 +16,29 @@ class UsuarioDAO
     }
 
 // UsuarioDAO.php
+    public function crearUsuario($nickname, $password, $nombre, $apellido, $telefono, $domicilio) {
+        $sql = "INSERT INTO usuario (nickname, password, nombre, apellido, telefono, domicilio) 
+        VALUES (:nickname, :password, :nombre, :apellido, :telefono, :domicilio)";
+        $stmt = $this->conexion->prepare($sql);
+
+        try {
+            $stmt->execute([
+                'nickname' => $nickname,
+                'password' => $password,
+                'nombre' => $nombre,
+                'apellido' => $apellido,
+                'telefono' => $telefono,
+                'domicilio' => $domicilio
+            ]);
+            return true; // Devuelve true si la inserción fue exitosa
+        } catch (PDOException $e) {
+            echo "Error al registrar usuario: " . $e->getMessage(); // Mostrar mensaje de error
+            return false; // Devuelve false si ocurrió un error
+        }
+    }
+
+
+    // Método para obtener un usuario por su nombre de usuario y contraseña
     public function obtenerUsuarioPorCredenciales($nickname, $password) {
         // SQL para seleccionar al usuario por su nickname
         $sql = "SELECT * FROM usuario WHERE nickname = :nickname LIMIT 1";
@@ -42,32 +65,6 @@ class UsuarioDAO
         } catch (PDOException $e) {
             echo "Error al obtener usuario: " . $e->getMessage();
             return false;
-        }
-    }
-
-    // Método para obtener un usuario por su nombre de usuario
-    public function obtenerUsuarioPorNombre($nombreUsuario)
-    {
-        try {
-            $sql = "SELECT * FROM usuario WHERE usuario = :usuario";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bindParam(':usuario', $nombreUsuario);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                return new UsuarioDTO(
-                    $result['usuario'],
-                    $result['contraseña'],
-                    $result['nombre'],
-                    $result['apellido'],
-                    $result['telefono'],
-                    $result['domicilio']
-                );
-            }
-            return null;
-        } catch (PDOException $e) {
-            echo "Error al obtener usuario: " . $e->getMessage();
-            return null;
         }
     }
 
