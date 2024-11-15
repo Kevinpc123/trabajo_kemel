@@ -88,6 +88,39 @@ if (isset($_POST['detalle'])) {
         .btn-agregar:hover {
             background-color: #bc764c;
         }
+        #buscador-contenedor {
+            display: none;
+            position: absolute;
+            top: 50%;
+            right: -275px;
+            transform: translateY(-50%);
+        }
+
+        #buscador {
+            padding: 8px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+
+        }
+
+        #buscar-btn {
+            padding: 8px;
+            background-color: #ff914d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #buscar-btn:hover {
+            background-color: #ff7a00;
+        }
+
+        #buscador-toggle:checked + #buscador-contenedor {
+            display: block;
+        }
     </style>
 </head>
 <body>
