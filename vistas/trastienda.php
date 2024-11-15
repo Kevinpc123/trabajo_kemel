@@ -1,3 +1,33 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+require_once '../database/conexion.php';
+require_once '../modelos/ProductoDAO.php';
+require_once '../modelos/ProductoDTO.php';
+require_once '../modelos/UsuarioDTO.php';
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$usuario = unserialize($_SESSION['usuario']);
+$nickname = $usuario->getNickname();
+$productoDAO = new ProductoDAO($conexion);
+$productos = $productoDAO->obtenerProductos();
+
+$productoEditar = null;
+if (isset($_GET['editar'])) {
+    $id = $_GET['editar'];
+    $productoEditar = $productoDAO->obtenerProductoPorId($id);
+}
+
+
+$mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : "";
+unset($_SESSION['mensaje']);
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,41 +37,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gestion de Trastienda</title>
     <link rel="stylesheet" href="../recursos/css/estilo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    session_start();
-    require_once '../database/conexion.php';
-    require_once '../modelos/ProductoDAO.php';
-    require_once '../modelos/ProductoDTO.php';
-    require_once '../modelos/UsuarioDTO.php';
-
-    // Verificación de sesión
-    if (!isset($_SESSION['usuario'])) {
-        header("Location: login.php");
-        exit;
-    }
-
-    $usuario = unserialize($_SESSION['usuario']);
-    $nickname = $usuario->getNickname();
-    $productoDAO = new ProductoDAO($conexion);
-    $productos = $productoDAO->obtenerProductos();
-
-    // Lógica de edición de productos
-    $productoEditar = null;
-    if (isset($_GET['editar'])) {
-        $id = $_GET['editar'];
-        $productoEditar = $productoDAO->obtenerProductoPorId($id);
-    }
-
-
-    $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : "";
-    unset($_SESSION['mensaje']);
-    ?>
     <style>
-        /* Estilos generales */
         header {
             position: fixed;
             top: 0;
@@ -49,10 +45,9 @@
             right: 0;
             background-color: #000000;
             z-index: 100;
-            height: 80px; /* Ajusta este valor según el tamaño de tu header */
+            height: 80px;
         }
 
-        /* Contenido de la página */
         .productos-inventario {
             padding: 80px;
             text-align: center;
@@ -85,15 +80,12 @@
             color: #333;
         }
 
-        /* Estilos de botones */
         .btn-editar, .btn-eliminar {
             color: #fff;
             padding: 5px 10px;
             text-decoration: none;
             border-radius: 4px;
         }
-
-
 
         .btn-editar {
             background-color: #ff914d;

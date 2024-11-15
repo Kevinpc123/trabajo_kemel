@@ -237,21 +237,18 @@ $nickname = $usuario->getNickname();
             <div class="producto-contenedor">
                 <!-- Imágenes -->
                 <?php
-                // Verificar si el producto tiene una imagen asociada
                 $imagen = $producto->getImagen();
                 if ($imagen) {
-                    // Si el producto tiene imagen, usamos la ruta correspondiente
                     $rutaImagen = "../" . $imagen;
                 } else {
-                    // Si no tiene imagen, mostramos una imagen por defecto
-                    $rutaImagen = "../recursos/imagenes/no_imagen_disponible.jpg"; // Puedes usar una imagen predeterminada
+                    $rutaImagen = "../recursos/imagenes/no_imagen_disponible.jpg";
                 }
                 ?>
                 <img src="<?php echo $rutaImagen; ?>" class="primera-imagen" alt="Imagen del producto">
             </div>
             <div class="informacion">
                 <!-- Nombre del producto -->
-                <h3><a href="">  <?php echo htmlspecialchars($producto->getNombre() ?? 'Sin nombre'); ?></a></h3>
+                <h3><a>  <?php echo htmlspecialchars($producto->getNombre() ?? 'Sin nombre'); ?></a></h3>
                 <p>Antes: <?php echo number_format($producto->getPrecio() ?? 0, 2); ?>€
                     <span class="rebaja">Ahora: <?php echo number_format(($producto->getPrecio() ?? 0) * 0.9, 2); ?>€</span>
                 </p>

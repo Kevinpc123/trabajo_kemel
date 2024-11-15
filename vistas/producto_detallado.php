@@ -8,14 +8,17 @@ require_once '../database/conexion.php';
 require_once '../modelos/ProductoDAO.php';
 require_once '../modelos/ProductoDTO.php';
 require_once '../modelos/UsuarioDTO.php';
-$usuario = unserialize($_SESSION ['usuario']);
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$usuario = unserialize($_SESSION['usuario']);
 $nickname = $usuario->getNickname();
-// Obtener el id del producto desde la URL
+
 if (isset($_POST['detalle'])) {
     $productoId = $_POST['detalle'];
-    // Crear objeto ProductoDAO
     $productoDAO = new ProductoDAO($conexion);
-    // Obtener el producto desde la base de datos
     $producto = $productoDAO->obtenerProductoPorId($productoId);
 
 

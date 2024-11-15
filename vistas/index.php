@@ -1,3 +1,20 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
+require_once '../database/conexion.php';
+require_once '../modelos/ProductoDAO.php';
+require_once '../modelos/ProductoDTO.php';
+$productoDAO = new productoDAO($conexion);
+$productos = $productoDAO->obtenerProductos();
+
+
+if (isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,15 +31,18 @@
             padding: 0;
             width: 100%;
         }
+
         .seccion-productos {
             padding: 100px;
             text-align: center;
         }
+
         .seccion-productos h2 {
             font-size: 2em;
             margin-bottom: 20px;
             color: #ff914d;
         }
+
         .producto-recuadro {
             display: inline-block;
             width: 300px;
@@ -45,6 +65,7 @@
             width: 100%;
             height: 200px;
         }
+
         .producto-recuadro img.primera-imagen {
             width: 100%;
             height: 100%;
@@ -75,13 +96,12 @@
             color: #28a745;
         }
 
-        /* Recuadro de búsqueda (oculto inicialmente) */
         #buscador-contenedor {
             display: none;
-            position: absolute; /* Colocar el recuadro fuera del flujo normal */
-            top: 50%; /* Centrado verticalmente respecto al contenedor */
-            right: -275px; /* Coloca el recuadro a la derecha con un pequeño margen */
-            transform: translateY(-50%); /* Ajustar para que se alinee verticalmente */
+            position: absolute;
+            top: 50%;
+            right: -275px;
+            transform: translateY(-50%);
         }
 
         #buscador {
@@ -90,6 +110,7 @@
             width: 200px;
             border: 1px solid #ccc;
             border-radius: 4px;
+
         }
 
         #buscar-btn {
@@ -105,29 +126,40 @@
             background-color: #ff7a00;
         }
 
-        /* Mostrar el recuadro de búsqueda cuando el checkbox está marcado */
         #buscador-toggle:checked + #buscador-contenedor {
             display: block;
         }
 
+        .btn-agregar{
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-agregar {
+            background-color: #ff914d;
+            margin-bottom: 10px;
+            display: inline-block;
+            outline: none;
+            border: none;
+        }
+
+        .btn-agregar:hover {
+            background-color: #bc764c;
+        }
+
+        .cantidad {
+            width: 50px;
+            height: 30px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
-    <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    session_start();
-    require_once '../database/conexion.php';
-    require_once '../modelos/ProductoDAO.php';
-    require_once '../modelos/ProductoDTO.php';
-    $productoDAO = new productoDAO($conexion);
-    $productos = $productoDAO->obtenerProductos();
 
-
-    if (isset($_SESSION['usuario'])) {
-        header("Location: login.php");
-        exit;
-    }
-    ?>
 </head>
 <body>
 <header>
@@ -190,23 +222,42 @@
         <a href="#" class="boton-reserva">Ver ahora</a>
     </div>
 </div>
+<!--PRODUCTOS-->
 <div class="seccion-productos">
     <h2>Productos</h2>
     <?php foreach ($productos as $producto): ?>
         <div class="producto-recuadro">
             <div class="producto-contenedor">
-                <!-- Imágenes de ejemplo -->
-                <img src="../recursos/imagenes/black-laptop-screen-dark-room-night.png" class="primera-imagen">
+                <!-- Imágenes -->
+                <?php
+                $imagen = $producto->getImagen();
+                if ($imagen) {
+                    $rutaImagen = "../" . $imagen;
+                } else {
+                    $rutaImagen = "../recursos/imagenes/no_imagen_disponible.jpg";
+                }
+                ?>
+                <img src="<?php echo $rutaImagen; ?>" class="primera-imagen" alt="Imagen del producto">
             </div>
             <div class="informacion">
                 <!-- Nombre del producto -->
-                <h3><?php echo htmlspecialchars($producto->getNombre() ?? 'Sin nombre'); ?></h3>
+                <h3><a>  <?php echo htmlspecialchars($producto->getNombre() ?? 'Sin nombre'); ?></a></h3>
                 <p>Antes: <?php echo number_format($producto->getPrecio() ?? 0, 2); ?>€
                     <span class="rebaja">Ahora: <?php echo number_format(($producto->getPrecio() ?? 0) * 0.9, 2); ?>€</span>
                 </p>
                 <p><?php echo htmlspecialchars($producto->getDescripcion() ?? 'Sin descripción'); ?></p>
                 <!-- Disponibilidad -->
                 <p class="disponibilidad">Disponible</p>
+                <form method="POST" action="../controladores/carrito_controlador.php">
+                    <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($producto->getId()); ?>">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" name="cantidad" value="1" min="1" class="cantidad">
+                    <button type="submit" class="btn-agregar">Añadir al carrito</button>
+                </form>
+                <form action="producto_detallado.php" method="post">
+                    <input type="hidden" name="detalle" value="<?php echo $producto->getId(); ?>">
+                    <button type="submit" class="btn-agregar">Ver Producto</button>
+                </form>
             </div>
         </div>
     <?php endforeach; ?>
