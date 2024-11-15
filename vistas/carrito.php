@@ -60,9 +60,11 @@
 
     </style>
     <?php
+    //depurador de errores
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    //iniciamos sesion y nos conectamos
     session_start();
     require_once '../database/conexion.php';
     require_once '../modelos/ProductoDAO.php';
@@ -70,14 +72,16 @@
     require_once '../modelos/UsuarioDTO.php';
     include_once '../controladores/carrito_controlador.php';
     include_once '../controladores/gestion_carrito.php';
-    $productoDAO = new productoDAO($conexion);
-    $productos = $productoDAO->obtenerProductos();
 
+    $productoDAO = new productoDAO($conexion);
+    //obtenemos los productos de la base de datos
+    $productos = $productoDAO->obtenerProductos();
+    //comprobacion de si el usuario esta registrado
     if (!isset($_SESSION['usuario'])) {
-        header("Location: login.php");
+        header("Location: login.php");//sino lo esta le mandamos al login.php
         exit;
     }
-
+    //CONECTADO
     $usuario = unserialize($_SESSION['usuario']);
     $nickname = $usuario->getNickname();
     ?>

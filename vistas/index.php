@@ -225,16 +225,17 @@ if (isset($_SESSION['usuario'])) {
 <!--PRODUCTOS-->
 <div class="seccion-productos">
     <h2>Productos</h2>
+    <--!repeticon de cada producto-->
     <?php foreach ($productos as $producto): ?>
         <div class="producto-recuadro">
             <div class="producto-contenedor">
-                <!-- Imágenes -->
+                <!-- comprobamos y visualizamos la imagen del producto-->
                 <?php
                 $imagen = $producto->getImagen();
                 if ($imagen) {
-                    $rutaImagen = "../" . $imagen;
+                    $rutaImagen = "../" . $imagen;//ruta de la imagen
                 } else {
-                    $rutaImagen = "../recursos/imagenes/no_imagen_disponible.jpg";
+                    $rutaImagen = "../recursos/imagenes/no_imagen_disponible.jpg";//sino exite ninguna imagen mostramos una al azar
                 }
                 ?>
                 <img src="<?php echo $rutaImagen; ?>" class="primera-imagen" alt="Imagen del producto">
