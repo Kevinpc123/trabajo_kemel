@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-/*ESTE ES EL CODIGO CSS DE LA BARRA DE NAVEGACION.*/
+
 *{
     padding:0;
     margin:0;
@@ -110,7 +110,7 @@ nav .menu a:hover::after{
 .texto{
     width: 50%;
     height: 1%;
-    text-align: right;/*ESTE ES EL POSICIONAMIENTO DEL TEXTO EN LA IMAGEN*/
+    text-align: right;
 }
 .boton-reserva{
     padding: 20px 40px;

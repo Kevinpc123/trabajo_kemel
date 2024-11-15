@@ -5,7 +5,6 @@ require_once '../modelos/UsuarioDAO.php';
 require_once '../modelos/UsuarioDTO.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Datos del formulario
     $nickname = $_POST['nickname'];
     $password = $_POST['password'];
     $nombre = $_POST['nombre'];

@@ -39,7 +39,7 @@ class ProductoDAO
             $producto->setNombre($fila['nombre']);
             $producto->setDescripcion($fila['descripcion']);
             $producto->setPrecio($fila['precio']);
-            $producto->setImagen($fila['imagen']);  // CORRECCIÓN: Establecer imagen correctamente en el objeto ProductoDTO
+            $producto->setImagen($fila['imagen']);
 
             if ($producto->getPrecio() < 10) {
                 $producto->setDescripcion($producto->getDescripcion() . " - Producto de oferta");
@@ -47,7 +47,7 @@ class ProductoDAO
                 $producto->setDescripcion($producto->getDescripcion() . " - Producto de calidad");
             }
 
-            $productos[] = $producto;  // Añadir el objeto ProductoDTO al array de productos
+            $productos[] = $producto;
         }
 
         return $productos;

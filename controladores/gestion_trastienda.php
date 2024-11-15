@@ -42,7 +42,7 @@ if (isset($_POST['agregar'])) {
                 exit;
             }
         } else {
-            $rutaRelativa = null; // Si no se sube imagen, será null
+            $rutaRelativa = null;
         }
 
 
@@ -50,7 +50,6 @@ if (isset($_POST['agregar'])) {
         if (!is_numeric($precio) || $precio <= 0) {
             echo "<p>El precio debe ser un número positivo.</p>";
         } else {
-            // Crear el objeto ProductoDTO con los datos
             $producto = new ProductoDTO(null, $nombre, $descripcion, $precio, null, $rutaRelativa);
             $productoDAO->agregarProducto($producto);
             header("Location: ../vistas/trastienda.php");
@@ -90,14 +89,12 @@ if (isset($_POST['actualizar'])) {
     $productoDTO = new ProductoDTO($id, $nombre, $descripcion, $precio, null, $imagenNueva);
     try {
         $productoDAO->actualizarProducto($productoDTO);
-        header("Location: ../vistas/trastienda.php");  // Redirigir después de la actualización
+        header("Location: ../vistas/trastienda.php");
     } catch (Exception $e) {
         $_SESSION['mensaje'] = $e->getMessage();
-        header("Location: ../vistas/trastienda.php");  // Redirigir si hay error
+        header("Location: ../vistas/trastienda.php");
     }
 }
 
-
-// Mostrar todos los productos
 $productos = $productoDAO->obtenerProductos();
 ?>
