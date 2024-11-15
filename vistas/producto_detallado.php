@@ -41,8 +41,12 @@ if (isset($_POST['detalle'])) {
     <title>Detalle del Producto</title>
     <link rel="stylesheet" href="../recursos/css/estilo.css">
     <style>
+        body{
+            background-color: black;
+            color: white;
+        }
         .producto-detalle {
-            padding: 20px;
+            padding: 110px;
             max-width: 1200px;
             margin: 0 auto;
             text-align: center;
@@ -52,7 +56,7 @@ if (isset($_POST['detalle'])) {
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 5px 5px 10px #ff914d;
         }
 
         .producto-detalle h1 {
@@ -73,7 +77,7 @@ if (isset($_POST['detalle'])) {
 
         .btn-agregar {
             background-color: #ff914d;
-            color: white;
+            color: #ffffff;
             padding: 10px 20px;
             border: none;
             text-decoration: none;
@@ -87,7 +91,63 @@ if (isset($_POST['detalle'])) {
     </style>
 </head>
 <body>
-
+<header>
+    <nav>
+        <img src="../recursos/imagenes/logo_2%20(1).svg" class="logo">
+        <div class="menu">
+            <a href="InicioConUsuario.php">Inicio</a>
+            <div class="desplegable">
+                <a href="#">Categorías</a>
+                <div class="desplegable-contenido">
+                    <a href="#">Premium</a>
+                    <a href="#">Standar</a>
+                    <a href="#">Basic</a>
+                </div>
+            </div>
+            <a href="#">Financiación</a>
+            <div class="desplegable">
+                <a href="#">Acerca de</a>
+                <div class="desplegable-contenido">
+                    <a href="#">Nosotros</a>
+                    <a href="#">Servicios</a>
+                </div>
+            </div>
+            <div class="desplegable">
+                <a href="#"><?= htmlspecialchars($nickname) ?></a>
+                <div class="desplegable-contenido">
+                    <a href="#">Ver perfil</a>
+                    <a href="#">Configuracion de cuenta</a>
+                    <a href="trastienda.php">Gestion de la trastienda</a>
+                    <a href="../controladores/cerrarsesion.php">Cerrar sesión</a>
+                </div>
+            </div>
+            <!-- Icono carrito -->
+            <?php
+            if (isset($_SESSION['usuario'])):?>
+                <a href="carrito.php">
+                    <img src="../recursos/imagenes/icons8-agregar-a-carrito-de-compras-50.png" class="icono-registro"
+                         alt="Carrito">
+                </a>
+                <a></a>
+            <?php endif;
+            ?>
+            <!-- Icono buscador-->
+            <?php
+            if (isset($_SESSION['usuario'])):?>
+                <label for="buscador-toggle">
+                    <img src="../recursos/imagenes/icons8-google-web-search-50.png" class="icono-registro"
+                         alt="Buscador">
+                </label>
+                <input type="checkbox" id="buscador-toggle" style="display: none;">
+                <div id="buscador-contenedor">
+                    <input type="text" id="buscador" placeholder="Buscar...">
+                    <button type="button" id="buscar-btn">Buscar</button>
+                </div>
+            <?php endif;
+            ?>
+        </div>
+    </nav>
+</header>
 <div class="producto-detalle">
     <h1><?php echo htmlspecialchars($producto->getNombre()); ?></h1>
 
